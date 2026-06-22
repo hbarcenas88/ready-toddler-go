@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Toddler Go app icon">
+  <rect width="512" height="512" rx="116" fill="#fff8ec"/>
+  <circle cx="256" cy="256" r="178" fill="#ffd36f"/>
+  <path d="M140 292c24 62 74 94 116 94s92-32 116-94" fill="none" stroke="#31415b" stroke-width="28" stroke-linecap="round"/>
+  <circle cx="196" cy="220" r="22" fill="#31415b"/>
+  <circle cx="316" cy="220" r="22" fill="#31415b"/>
+  <path d="M126 158c36-48 82-72 138-72 54 0 96 22 122 66" fill="none" stroke="#f49f8f" stroke-width="30" stroke-linecap="round"/>
+</svg>

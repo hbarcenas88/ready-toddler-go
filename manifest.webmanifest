@@ -1,0 +1,25 @@
+{
+  "name": "Ready, Toddler, Go!",
+  "short_name": "Toddler Go!",
+  "description": "A warm offline toddler timer and countdown app for routines and transitions.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#fff8ec",
+  "theme_color": "#f9d9a9",
+  "icons": [
+    {
+      "src": "assets/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

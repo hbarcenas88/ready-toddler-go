@@ -1,0 +1,177 @@
+.home-hero {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.countdown-card {
+  background:
+    radial-gradient(circle at right top, rgba(168, 221, 196, 0.52), transparent 42%),
+    linear-gradient(135deg, #fffaf0, #ffe4d9);
+}
+
+.activity-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.activity-card {
+  display: grid;
+  min-height: 138px;
+  align-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: #fff;
+  box-shadow: var(--shadow-small);
+  text-align: left;
+}
+
+.activity-card .emoji {
+  font-size: 2rem;
+}
+
+.timer-screen {
+  display: grid;
+  min-height: calc(100vh - 40px);
+  align-content: center;
+  gap: var(--space-5);
+}
+
+.time-display {
+  font-size: clamp(3.5rem, 18vw, 7rem);
+  font-weight: 900;
+  text-align: center;
+  letter-spacing: 0;
+}
+
+.progress-wrap {
+  display: grid;
+  place-items: center;
+  gap: var(--space-3);
+}
+
+.progress-ring {
+  --progress: 0;
+  display: grid;
+  width: min(76vw, 330px);
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    conic-gradient(var(--color-primary) calc(var(--progress) * 1turn), rgba(255, 255, 255, 0.72) 0),
+    linear-gradient(145deg, #fff, #fff1de);
+  box-shadow: var(--shadow-soft);
+}
+
+.progress-ring-inner {
+  display: grid;
+  width: 76%;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+  background: #fff9ef;
+  font-size: 4rem;
+}
+
+.journey-stage {
+  position: relative;
+  min-height: 180px;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, #dff4ff, #fff0d4);
+}
+
+.journey-stage img {
+  position: absolute;
+  bottom: 18px;
+  left: calc(8% + var(--progress) * 62%);
+  width: min(34vw, 148px);
+  transform: translateX(-10%);
+  transition: left var(--duration-normal);
+}
+
+.finish-flag {
+  position: absolute;
+  right: 18px;
+  bottom: 22px;
+  font-size: 2.3rem;
+}
+
+.traffic-light {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+
+.traffic-light span {
+  height: 90px;
+  border-radius: var(--radius-lg);
+  background: rgba(255,255,255,0.72);
+  box-shadow: inset 0 0 0 3px rgba(255,255,255,0.8);
+}
+
+.traffic-light .is-on.green { background: var(--color-success); }
+.traffic-light .is-on.yellow { background: var(--color-sun); }
+.traffic-light .is-on.red { background: var(--color-primary-strong); }
+
+.celebration {
+  text-align: center;
+  font-size: 3rem;
+  animation: pop var(--duration-normal) ease-out;
+}
+
+.settings-list {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.settings-section {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.history-item {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.lock-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-lock);
+  display: grid;
+  place-items: center;
+  padding: var(--space-5);
+  background: rgba(255, 248, 236, 0.68);
+  backdrop-filter: blur(8px);
+  text-align: center;
+}
+
+.lock-panel {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  background: #fff;
+  box-shadow: var(--shadow-soft);
+}
+
+@keyframes pop {
+  from { transform: scale(0.84); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@media (min-width: 680px) {
+  .home-hero {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
+  .activity-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

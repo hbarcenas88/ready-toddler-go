@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Toddler Go maskable icon">
+  <rect width="512" height="512" fill="#ffd36f"/>
+  <circle cx="256" cy="256" r="170" fill="#fff8ec"/>
+  <path d="M144 292c28 58 72 86 112 86s84-28 112-86" fill="none" stroke="#31415b" stroke-width="28" stroke-linecap="round"/>
+  <circle cx="200" cy="220" r="22" fill="#31415b"/>
+  <circle cx="312" cy="220" r="22" fill="#31415b"/>
+  <path d="M124 160c38-48 82-72 132-72 54 0 96 24 132 72" fill="none" stroke="#f49f8f" stroke-width="30" stroke-linecap="round"/>
+</svg>

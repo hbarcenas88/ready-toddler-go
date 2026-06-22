@@ -1,0 +1,50 @@
+:root {
+  --color-bg: #fff8ec;
+  --color-bg-soft: #fff1d8;
+  --color-surface: #ffffff;
+  --color-surface-warm: #fff7e8;
+  --color-ink: #31415b;
+  --color-muted: #6a7890;
+  --color-primary: #f49f8f;
+  --color-primary-strong: #df746d;
+  --color-mint: #a8ddc4;
+  --color-blue: #a6d8f0;
+  --color-sun: #ffd36f;
+  --color-rose: #f5b8c8;
+  --color-lavender: #c8bdf4;
+  --color-peach: #ffc5a6;
+  --color-danger: #c45252;
+  --color-success: #4c9a6a;
+  --shadow-soft: 0 18px 40px rgba(74, 54, 33, 0.13);
+  --shadow-small: 0 8px 18px rgba(74, 54, 33, 0.1);
+  --radius-xs: 10px;
+  --radius-sm: 14px;
+  --radius-md: 18px;
+  --radius-lg: 28px;
+  --radius-pill: 999px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --font-family: ui-rounded, "Arial Rounded MT Bold", "Segoe UI", system-ui, sans-serif;
+  --font-size-xs: 0.78rem;
+  --font-size-sm: 0.9rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.2rem;
+  --font-size-xl: 1.6rem;
+  --font-size-xxl: 3.2rem;
+  --line-height: 1.35;
+  --duration-fast: 150ms;
+  --duration-normal: 260ms;
+  --z-sheet: 20;
+  --z-modal: 30;
+  --z-toast: 40;
+  --z-lock: 50;
+}
+
+[data-theme="darkPrepared"] {
+  color-scheme: light;
+}
