@@ -31,6 +31,21 @@
   font-size: 2rem;
 }
 
+[data-age-mode="mini"] .activity-card,
+[data-age-mode="mini"] .chip,
+[data-age-mode="mini"] .primary-button,
+[data-age-mode="mini"] .secondary-button {
+  min-height: 54px;
+}
+
+[data-age-mode="mini"] .activity-card strong {
+  font-size: var(--font-size-lg);
+}
+
+[data-age-mode="kids"] .eyebrow {
+  font-size: var(--font-size-md);
+}
+
 .timer-screen {
   display: grid;
   min-height: calc(100vh - 40px);

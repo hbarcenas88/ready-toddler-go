@@ -1,0 +1,140 @@
+# Ready, Toddler, Go!
+
+Ready, Toddler, Go! is a mobile-first offline PWA for toddler routines and transitions. The short PWA name is Toddler Go!
+
+The app helps an adult start quick visual countdowns or activity timers for common routines such as brushing teeth, washing hands, getting dressed, cleaning up toys, eating, using the bathroom, calming down, and leaving home. It is a calm support tool, not a medical tool or behavior scoring system.
+
+## How to open locally
+
+Use a local HTTP server. Avoid opening `index.html` directly with `file://`, because service workers and installable PWA behavior require a browser origin.
+
+```powershell
+python -m http.server 8809
+```
+
+Then open:
+
+```text
+http://127.0.0.1:8809/
+```
+
+## How to test in browser
+
+1. Open the local URL.
+2. Complete or skip onboarding.
+3. Start a quick countdown from the Home chips.
+4. Start an activity from the favorite activity cards.
+5. Test pause, resume, add one minute, restart, finish/complete, lock screen, and long-press unlock.
+6. Open Settings and test language, sound, usage mode, PIN, activity editing, export/import, history, and repair app.
+7. Reload the page and verify saved state returns.
+
+## PWA install
+
+In Chrome or Edge, open the local or published HTTPS URL and use the browser install option. After the first successful load, the service worker caches the app shell and local assets so the app can reload offline.
+
+## Publish with GitHub Pages
+
+1. Push this folder to a GitHub repository.
+2. In repository settings, enable Pages for the branch and folder that contains `index.html`.
+3. Open the published HTTPS URL.
+4. Install the PWA from the browser.
+
+No build step is required.
+
+## Clearing service worker/cache after updates
+
+If an update does not appear:
+
+1. Open Toddler Go!
+2. Go to Settings.
+3. Open Saved data.
+4. Use Repair app.
+5. Close and reopen the app.
+
+For a stronger reset, use the browser Application/Storage panel and clear service workers and cache storage for the site.
+
+## Export/import
+
+Export creates a JSON file with app name, data version, exported timestamp, settings, profiles, activities, countdown preferences, and recent history.
+
+Import validates that the file belongs to Ready, Toddler, Go! and matches the current data version before replacing local data. Assets, browser cache, service workers, icons, images, and sound files are not exported.
+
+## Folder structure
+
+```text
+/index.html
+/manifest.webmanifest
+/service-worker.js
+/src
+  app.js
+  config.js
+  state.js
+  storage.js
+  seedData.js
+  timerEngine.js
+  ui.js
+  i18n.js
+  assets.js
+  sounds.js
+  pwa.js
+/styles
+  tokens.css
+  base.css
+  components.css
+  screens.css
+/assets
+  /icons
+  /illustrations/journeys
+  /illustrations/activities
+  /sounds
+```
+
+## Adding future illustrations
+
+Place local files under `assets/illustrations/journeys` or `assets/illustrations/activities`, add them to the registry in `src/assets.js`, and include them in the service worker cache list.
+
+## Adding future sounds
+
+Place local files under `assets/sounds`, add them to the sound registry in `src/assets.js`, and update `src/sounds.js` if the playback behavior needs to change. Keep Web Audio fallback available.
+
+## Testing checklist
+
+- Home buttons and bottom sheet menu work.
+- Onboarding can be completed or skipped.
+- Settings opens from gear and menu.
+- Language switching works.
+- Quick countdown chips start timers.
+- Custom countdown rejects 0:00.
+- Journey and visual preferences save.
+- Activity timers start from Home and Activities.
+- Pause, resume, add one minute, restart, complete early, finish now, and Home return work.
+- Temporary screen lock disables controls and long-press unlock works.
+- Child can touch mode asks for PIN setup and protects adult sections.
+- Adult controls mode does not ask for PIN constantly.
+- localStorage persists after reload.
+- Export JSON downloads.
+- Import validates app/data version.
+- Reset and restore defaults work.
+- Service worker registers.
+- Offline reload works after first load.
+- Mobile width is usable and tablet/desktop do not break.
+- No external dependencies, CDNs, analytics, login, cloud, or remote APIs are used.
+
+## Known limitations
+
+- Illustrations and icons are placeholder local SVGs.
+- Sounds are generated with the Web Audio API until real local sound files are added.
+- Wake Lock depends on browser support.
+- PIN hashing is practical for a local-only app, not a server-grade authentication system.
+- Export/import covers app data only.
+
+## V2 roadmap
+
+- Multi-step routines and chained activities.
+- Richer premium illustration packs.
+- Richer local sound library.
+- More visual themes.
+- Portuguese language.
+- Optional dark mode.
+- More advanced child profiles.
+- Optional 120-minute timer configuration.
