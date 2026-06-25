@@ -4,6 +4,7 @@ import { detectLanguage } from "./i18n.js";
 
 export function loadData() {
   const language = detectLanguage();
+  migrateLegacyStorageKeyIfNeeded();
   const raw = localStorage.getItem(STORAGE.key);
   if (!raw) return createDefaultData(language);
 
@@ -32,6 +33,32 @@ export function resetData() {
   const data = createDefaultData(detectLanguage());
   saveData(data);
   return data;
+}
+
+export function migrateLegacyStorageKeyIfNeeded() {
+  const current = localStorage.getItem(STORAGE.key);
+  const legacy = localStorage.getItem(STORAGE.legacyKey);
+  if (!current && legacy) {
+    localStorage.setItem(STORAGE.key, legacy);
+  }
+}
+
+export function hasLegacyStorageKey() {
+  return localStorage.getItem(STORAGE.legacyKey) !== null;
+}
+
+export function removeLegacyStorageKey() {
+  localStorage.removeItem(STORAGE.legacyKey);
+}
+
+export function getAppStorageSummary() {
+  return Object.keys(localStorage)
+    .filter((key) => key.startsWith(STORAGE.appStoragePrefix))
+    .sort()
+    .map((key) => ({
+      key,
+      bytes: localStorage.getItem(key)?.length || 0
+    }));
 }
 
 export function restoreOriginalActivities(data) {

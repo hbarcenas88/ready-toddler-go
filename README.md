@@ -51,7 +51,33 @@ If an update does not appear:
 4. Use Repair app.
 5. Close and reopen the app.
 
-For a stronger reset, use the browser Application/Storage panel and clear service workers and cache storage for the site.
+For a stronger PWA repair, use the browser Application panel and clear service workers and cache storage for the site. Avoid broad `localStorage.clear()` actions on shared domains.
+
+## Storage namespace safety
+
+GitHub Pages project sites can share browser storage by domain. For example, two apps published under the same `github.io` origin may see the same `localStorage` area even when they live in different folders.
+
+Toddler Go uses its own namespace:
+
+```text
+APP_STORAGE_PREFIX = rtg:
+STORAGE_KEY = rtg:app:v1
+```
+
+Reset, import, export, and debug/storage views are scoped to Toddler Go data. They must only operate on keys that start with `rtg:`. The app also includes a one-time safe migration from the old key `readyToddlerGo.v1` to `rtg:app:v1`; it does not delete the old key automatically. Data Management includes an explicit action to remove only that old Toddler Go key.
+
+Manual safety test:
+
+```js
+localStorage.setItem("finance:test", "do-not-delete")
+```
+
+Then run Reset App inside Toddler Go and confirm:
+
+```js
+localStorage.getItem("finance:test")
+// "do-not-delete"
+```
 
 ## Export/import
 

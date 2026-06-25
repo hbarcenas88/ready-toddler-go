@@ -39,7 +39,10 @@ import {
 } from "./timerEngine.js";
 import {
   exportData,
+  getAppStorageSummary,
+  hasLegacyStorageKey,
   replaceData,
+  removeLegacyStorageKey,
   resetData,
   restoreOriginalActivities,
   saveData,
@@ -351,13 +354,21 @@ function renderDataManagement(state) {
       <button class="danger-button" type="button" data-action="reset-app">${t("resetApp")}</button>
       <input id="importFile" type="file" accept="application/json,.json" hidden>
     </div>
+    <p class="eyebrow">${t("storageScopeNote")}</p>
     <div class="soft-card">
       <p><strong>${t("appVersion")}:</strong> ${APP_INFO.version}</p>
       <p><strong>${t("dataVersion")}:</strong> ${data.dataVersion}</p>
       <p><strong>${t("activityCount")}:</strong> ${data.activities.length}</p>
       <p><strong>${t("profileCount")}:</strong> ${data.profiles.length}</p>
       <p><strong>${t("historyCount")}:</strong> ${data.history.length}</p>
+      <p><strong>${t("appStorageKeys")}:</strong> ${getAppStorageSummary().map((item) => `${item.key} (${item.bytes} bytes)`).join(", ")}</p>
     </div>
+    ${hasLegacyStorageKey() ? `
+      <div class="soft-card">
+        <p>${t("oldStorageFound")}</p>
+        <button class="danger-button" type="button" data-action="remove-old-storage-key">${t("removeOldStorageKey")}</button>
+      </div>
+    ` : ""}
   `;
 }
 
@@ -485,7 +496,7 @@ function handleClick(event) {
   const state = getState();
   const data = state.data;
 
-  if (["open-activity-form", "restore-activities", "export-data", "trigger-import", "reset-app"].includes(action) && actionNeedsProtection(action)) return;
+  if (["open-activity-form", "restore-activities", "export-data", "trigger-import", "reset-app", "remove-old-storage-key"].includes(action) && actionNeedsProtection(action)) return;
   if (action === "nav") setScreen(button.dataset.screen);
   if (action === "open-sheet") setBottomSheetOpen(true);
   if (action === "close-sheet") setBottomSheetOpen(false);
@@ -526,6 +537,11 @@ function handleClick(event) {
   if (action === "export-data") exportCurrentData();
   if (action === "trigger-import") document.getElementById("importFile")?.click();
   if (action === "repair-app") repairApp();
+  if (action === "remove-old-storage-key" && window.confirm(t("removeOldStorageConfirm"))) {
+    removeLegacyStorageKey();
+    setToast(t("removeOldStorageOk"));
+    setData(data);
+  }
   if (action === "reset-app" && window.confirm(t("resetConfirm"))) {
     clearProtectedUnlocks();
     setData(resetData());

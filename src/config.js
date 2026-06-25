@@ -1,12 +1,14 @@
 export const APP_INFO = {
   fullName: "Ready, Toddler, Go!",
   shortName: "Toddler Go!",
-  version: "1.0.0",
+  version: "1.0.1",
   themeName: "pastelAdventure"
 };
 
 export const STORAGE = {
-  key: "readyToddlerGo.v1",
+  appStoragePrefix: "rtg:",
+  key: "rtg:app:v1",
+  legacyKey: "readyToddlerGo.v1",
   dataVersion: 1,
   historyLimit: 50
 };
