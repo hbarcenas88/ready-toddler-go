@@ -13,7 +13,7 @@ import {
   TIMER_TYPES,
   USE_MODES
 } from "./config.js";
-import { getActivityAsset, getJourneyAsset } from "./assets.js";
+import { getActivityAsset, getJourneyAsset, getJourneyScene, getJourneySceneAsset } from "./assets.js";
 import { getActiveLanguage, setActiveLanguage, t } from "./i18n.js";
 import { DEFAULT_JOURNEY_ID, JOURNEYS, ORIGINAL_ACTIVITIES } from "./seedData.js";
 import {
@@ -264,7 +264,7 @@ function renderTimerScreen(state) {
       <section class="card grid">
         <p class="eyebrow">${isCountdown ? t("quickCountdown") : t("activities")}</p>
         <h1 class="section-title">${escapeHtml(title)}</h1>
-        ${isCompleted ? `<div class="celebration" aria-hidden="true">⭐ ✨ ⭐</div>` : renderTimerVisual(timer, activity, runtime, emoji)}
+        ${isCompleted ? renderCompletedVisual(timer) : renderTimerVisual(timer, activity, runtime, emoji)}
         ${state.data.settings.showCountdownNumbers || !isCountdown ? `<div class="time-display">${formatTime(runtime.remainingSeconds)}</div>` : ""}
         <p>${isCountdown ? (runtime.remainingSeconds <= 60 ? t("almostDone") : t("calmCountdown")) : t(activity?.phraseKey || "calmCountdown")}</p>
         ${isCompleted ? renderTimerDone(timer, activity) : renderTimerControls(timer)}
@@ -276,12 +276,7 @@ function renderTimerScreen(state) {
 function renderTimerVisual(timer, activity, runtime, emoji) {
   const progress = runtime.progress.toFixed(4);
   if (timer.type === TIMER_TYPES.countdown && timer.visual === COUNTDOWN_VISUALS.journey) {
-    return `
-      <div class="journey-stage" style="--progress:${progress}">
-        <img src="${getJourneyAsset(timer.journeyId || DEFAULT_JOURNEY_ID)}" alt="">
-        <div class="finish-flag" aria-hidden="true">🏁</div>
-      </div>
-    `;
+    return renderJourneyScene(timer, Number(progress));
   }
   if (timer.type === TIMER_TYPES.countdown && timer.visual === COUNTDOWN_VISUALS.trafficLight) {
     const stage = runtime.progress > 0.72 ? "red" : runtime.progress > 0.42 ? "yellow" : "green";
@@ -299,6 +294,84 @@ function renderTimerVisual(timer, activity, runtime, emoji) {
       ${activity ? `<img src="${getActivityAsset(activity.assetId)}" alt="" width="180" height="130">` : ""}
     </div>
   `;
+}
+
+function renderJourneyScene(timer, progress) {
+  const journeyId = timer.journeyId || DEFAULT_JOURNEY_ID;
+  const scene = getJourneyScene(journeyId);
+  const background = getJourneySceneAsset(scene, "background");
+  const character = getJourneySceneAsset(scene, "character");
+  const goal = getJourneySceneAsset(scene, "goal");
+  const hasLayeredScene = background && character && goal;
+
+  if (!hasLayeredScene) {
+    return renderJourneyFallback(journeyId, progress);
+  }
+
+  return `
+    <div class="journey-stage journey-stage-layered" style="${journeySceneStyle(scene, progress)}">
+      <img class="journey-background" src="${background}" alt="">
+      <img class="journey-goal" src="${goal}" alt="">
+      <div class="journey-character" aria-hidden="true">
+        <img src="${character}" alt="">
+      </div>
+    </div>
+  `;
+}
+
+function renderJourneyFallback(journeyId, progress) {
+  return `
+    <div class="journey-stage" style="--progress:${progress.toFixed(4)}">
+      <img class="journey-fallback-character" src="${getJourneyAsset(journeyId)}" alt="">
+      <div class="finish-flag" aria-hidden="true">🏁</div>
+    </div>
+  `;
+}
+
+function renderCompletedVisual(timer) {
+  if (timer.type === TIMER_TYPES.countdown && timer.visual === COUNTDOWN_VISUALS.journey) {
+    const journeyId = timer.journeyId || DEFAULT_JOURNEY_ID;
+    const scene = getJourneyScene(journeyId);
+    const background = getJourneySceneAsset(scene, "background");
+    const character = getJourneySceneAsset(scene, "character");
+    const goal = getJourneySceneAsset(scene, "goal");
+
+    if (background && character && goal) {
+      return `
+        <div class="journey-stage journey-stage-layered is-complete" style="${journeySceneStyle(scene, 1)}">
+          <img class="journey-background" src="${background}" alt="">
+          <img class="journey-goal" src="${goal}" alt="">
+          <div class="journey-character" aria-hidden="true">
+            <img src="${character}" alt="">
+          </div>
+          <div class="journey-celebration" aria-hidden="true">${scene.celebrationEmoji || "✨"}</div>
+        </div>
+      `;
+    }
+  }
+
+  return `<div class="celebration" aria-hidden="true">⭐ ✨ ⭐</div>`;
+}
+
+function journeySceneStyle(scene, progress) {
+  const clampedProgress = Math.max(0, Math.min(1, Number.isFinite(progress) ? progress : 0));
+  const startX = percentValue(scene.startX, 4);
+  const endX = percentValue(scene.endX, 68);
+  const currentX = startX + ((endX - startX) * clampedProgress);
+  return [
+    `--progress:${clampedProgress.toFixed(4)}`,
+    `--journey-character-size:${scene.characterSize || "34%"}`,
+    `--journey-current-x:${currentX.toFixed(2)}%`,
+    `--journey-bottom:${scene.bottom || "10%"}`,
+    `--journey-goal-right:${scene.goalRight || "6%"}`,
+    `--journey-goal-bottom:${scene.goalBottom || "10%"}`
+  ].join(";");
+}
+
+function percentValue(value, fallback) {
+  if (typeof value !== "string") return fallback;
+  const parsed = Number(value.replace("%", ""));
+  return Number.isFinite(parsed) ? parsed : fallback;
 }
 
 function renderTimerControls(timer) {

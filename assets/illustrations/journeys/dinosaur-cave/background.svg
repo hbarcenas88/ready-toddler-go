@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-label="Soft prehistoric valley background">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#dff4ff"/>
+      <stop offset="1" stop-color="#fff2d5"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#sky)"/>
+  <circle cx="170" cy="130" r="62" fill="#ffd36f" opacity=".82"/>
+  <path d="M0 480c170-110 300-110 470 0s330 112 520 0 310-112 470 0v195H0z" fill="#cfead4"/>
+  <path d="M0 552c160-70 322-70 486 0s332 68 502 0 312-68 480 0v123H0z" fill="#a8ddc4"/>
+  <path d="M80 310c92-98 185-122 278-72s183 36 270-42 188-70 304 26 212 111 292 45v150H80z" fill="#c8bdf4" opacity=".42"/>
+  <path d="M0 610h1200v65H0z" fill="#8fcaa9"/>
+</svg>

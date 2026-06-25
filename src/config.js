@@ -1,7 +1,7 @@
 export const APP_INFO = {
   fullName: "Ready, Toddler, Go!",
   shortName: "Toddler Go!",
-  version: "1.0.4",
+  version: "1.0.5",
   themeName: "pastelAdventure"
 };
 

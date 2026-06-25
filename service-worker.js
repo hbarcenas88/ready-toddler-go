@@ -1,6 +1,6 @@
 const PWA_CACHE = {
-  appVersion: "1.0.4",
-  cacheName: "ready-toddler-go-v1.0.4",
+  appVersion: "1.0.5",
+  cacheName: "ready-toddler-go-v1.0.5",
   assets: [
     "./",
     "./index.html",
@@ -28,13 +28,24 @@ const PWA_CACHE = {
     "./assets/illustrations/journeys/rocket-moon.svg",
     "./assets/illustrations/journeys/train-station.svg",
     "./assets/illustrations/journeys/dinosaur-cave.svg",
+    "./assets/illustrations/journeys/dinosaur-cave/background.svg",
+    "./assets/illustrations/journeys/dinosaur-cave/character.svg",
+    "./assets/illustrations/journeys/dinosaur-cave/goal.svg",
     "./assets/illustrations/activities/activity-placeholder.svg"
   ]
 };
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(PWA_CACHE.cacheName).then((cache) => cache.addAll(PWA_CACHE.assets))
+    caches.open(PWA_CACHE.cacheName).then((cache) =>
+      Promise.all(
+        Array.from(new Set(PWA_CACHE.assets)).map((asset) =>
+          cache.add(asset).catch((error) => {
+            console.warn("Toddler Go cache skipped", asset, error);
+          })
+        )
+      )
+    )
   );
   self.skipWaiting();
 });

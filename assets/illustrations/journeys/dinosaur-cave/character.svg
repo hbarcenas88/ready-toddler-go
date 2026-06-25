@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 320" role="img" aria-label="Friendly dinosaur">
+  <path d="M62 226c32-78 106-112 188-84 64 22 102 18 134-8 12 64-28 120-110 132H96c-30 0-44-16-34-40z" fill="#7fc8a3"/>
+  <path d="M118 142c8-58 54-92 112-90 72 3 116 53 116 118 0 22-5 42-15 60H118z" fill="#95d7b5"/>
+  <circle cx="258" cy="124" r="12" fill="#31415b"/>
+  <path d="M276 162c18 12 38 12 58 0" fill="none" stroke="#31415b" stroke-width="10" stroke-linecap="round"/>
+  <path d="M134 68l-18-38 46 22zm62-20l4-42 32 32zm72 12l28-32 14 44z" fill="#ffd36f"/>
+  <path d="M96 266l-18 38h50l14-38zm158 0l20 38h50l-20-38z" fill="#6fb992"/>
+  <path d="M50 214c-30 14-40 38-30 70 28-20 50-42 66-70z" fill="#7fc8a3"/>
+</svg>

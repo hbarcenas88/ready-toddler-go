@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 320" role="img" aria-label="Cozy cave goal">
+  <path d="M42 282c0-124 58-224 140-224s136 100 136 224z" fill="#6a7890"/>
+  <path d="M98 282c0-80 36-144 86-144s82 64 82 144z" fill="#31415b" opacity=".62"/>
+  <path d="M42 282h276" stroke="#4e5d72" stroke-width="20" stroke-linecap="round"/>
+  <circle cx="256" cy="84" r="16" fill="#fff8ec" opacity=".72"/>
+  <path d="M48 250c36-24 70-24 104 0s70 24 108 0 70-24 104 0" fill="none" stroke="#a8ddc4" stroke-width="12" stroke-linecap="round" opacity=".86"/>
+</svg>

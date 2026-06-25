@@ -117,7 +117,66 @@ Import validates that the file belongs to Ready, Toddler, Go! and matches the cu
 
 ## Adding future illustrations
 
-Place local files under `assets/illustrations/journeys` or `assets/illustrations/activities`, add them to the registry in `src/assets.js`, and include them in the service worker cache list.
+Countdown journey scenes are centralized in `src/assets.js` under `ASSETS.journeyScenes`. V1 supports layered visuals for countdown journeys only; activity visuals still use the existing activity placeholder flow.
+
+Use this exact folder shape for a layered countdown journey:
+
+```text
+assets/illustrations/journeys/
+  dinosaur-cave/
+    background.svg
+    character.svg
+    goal.svg
+```
+
+Expected file names:
+
+```text
+background.svg
+character.svg
+goal.svg
+```
+
+Allowed formats for V1 are `.svg`, `.png`, and `.webp`. SVG is recommended for simple vector/storybook art. PNG or WebP is better for painted premium artwork with transparent characters.
+
+Recommended dimensions and weights:
+
+```text
+background: 1200x675 or 1000x600, ideally under 300 KB
+character: transparent canvas, 512x512 or smaller, ideally under 150 KB
+goal: transparent canvas, 512x512 or smaller, ideally under 150 KB
+full journey: try to stay under 600 KB total
+```
+
+To add or replace a journey:
+
+1. Add the files under `assets/illustrations/journeys/<journey-id>/`.
+2. Update `ASSETS.journeyScenes` in `src/assets.js`.
+3. Keep a `fallback` image for safety, usually `assets/illustrations/journeys/<journey-id>.svg`.
+4. Add the new asset paths to `service-worker.js` so installed PWAs can load them offline.
+5. Bump `APP_INFO.version` in `src/config.js` and `PWA_CACHE.appVersion` / `cacheName` in `service-worker.js`.
+
+Example registry entry:
+
+```js
+"dinosaur-cave": {
+  background: "assets/illustrations/journeys/dinosaur-cave/background.svg",
+  character: "assets/illustrations/journeys/dinosaur-cave/character.svg",
+  goal: "assets/illustrations/journeys/dinosaur-cave/goal.svg",
+  fallback: "assets/illustrations/journeys/dinosaur-cave.svg",
+  characterSize: "34%",
+  startX: "4%",
+  endX: "68%",
+  bottom: "9%",
+  goalRight: "5%",
+  goalBottom: "9%",
+  celebrationEmoji: "✨"
+}
+```
+
+The UI must read paths, sizes, positions, and celebration values from the registry. If a layered asset is missing, the app falls back to the old single-image journey visual; if that is also missing, it uses the default journey asset instead of leaving the timer blank.
+
+If old assets keep appearing after a replacement, open Settings > Data & maintenance > Repair app, then close and reopen the app. For a stronger browser-level reset, clear the service worker and Cache Storage for this site in DevTools > Application. Avoid broad `localStorage.clear()` on shared domains.
 
 ## Adding future sounds
 
