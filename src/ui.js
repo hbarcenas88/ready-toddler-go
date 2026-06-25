@@ -119,21 +119,21 @@ function renderHome(state) {
       <article class="card countdown-card">
         <p class="eyebrow">${t("quickCountdown")}</p>
         <h2 class="section-title">${t("calmCountdown")}</h2>
-        <div class="chip-row" aria-label="${t("quickCountdown")}">
+        <div class="quick-countdown-grid" aria-label="${t("quickCountdown")}">
           ${COUNTDOWN_PRESETS.map((preset) => `
             <button class="chip" type="button" data-action="start-preset" data-seconds="${preset.seconds}">${t(preset.labelKey)}</button>
           `).join("")}
           <button class="chip" type="button" data-action="open-custom-countdown">${t("custom")}</button>
         </div>
-        <div class="action-row">
-          <button class="secondary-button" type="button" data-action="nav" data-screen="${APP_SCREENS.countdown}">${t("visualMode")}</button>
+        <div class="countdown-card-footer">
+          <button class="secondary-button visual-mode-button" type="button" data-action="nav" data-screen="${APP_SCREENS.countdown}">${t("visualMode")}</button>
         </div>
       </article>
 
       <article class="card">
         <p class="eyebrow">${t("favoriteActivities")}</p>
         <h2 class="section-title">${t("activities")}</h2>
-        <div class="activity-grid">${favorites.map(renderActivityCard).join("")}</div>
+        <div class="activity-grid">${favorites.map(renderActivityCardV2).join("")}</div>
         <div class="action-row">
           <button class="secondary-button" type="button" data-action="nav" data-screen="${APP_SCREENS.activities}">${t("allActivities")}</button>
         </div>
@@ -207,7 +207,7 @@ function renderActivitiesScreen(state) {
         <button class="secondary-button" type="button" data-action="open-activity-form">${t("createActivity")}</button>
       </div>
       <p class="eyebrow">${t("familyNote")}</p>
-      <div class="activity-grid">${state.data.activities.map(renderActivityCard).join("")}</div>
+      <div class="activity-grid">${state.data.activities.map(renderActivityCardV2).join("")}</div>
     </section>
   `;
 }
@@ -223,6 +223,27 @@ function renderActivityCard(activity) {
       <div class="action-row">
         <button class="ghost-button" type="button" data-action="toggle-favorite" data-id="${activity.id}" aria-label="${t("favorite")}">${activity.favorite ? "★" : "☆"}</button>
         <button class="ghost-button" type="button" data-action="open-activity-form" data-id="${activity.id}">${t("edit")}</button>
+      </div>
+    </article>
+  `;
+}
+
+function renderActivityCardV2(activity) {
+  return `
+    <article class="activity-card" data-color="${activity.color}">
+      <button class="activity-main-button" type="button" data-action="start-activity" data-id="${activity.id}" aria-label="${activityLabel(activity)}">
+        <span class="activity-emoji" aria-hidden="true">${activity.emoji}</span>
+        <span class="activity-title">${activityLabel(activity)}</span>
+        <span class="duration-badge">${formatDurationBadge(activity.durationSeconds)}</span>
+      </button>
+      <div class="activity-actions">
+        <button class="favorite-button ${activity.favorite ? "is-favorite" : ""}" type="button" data-action="toggle-favorite" data-id="${activity.id}" aria-label="${t("favorite")}">
+          <span aria-hidden="true">${activity.favorite ? "&#9829;" : "&#9825;"}</span>
+        </button>
+        <button class="edit-chip" type="button" data-action="open-activity-form" data-id="${activity.id}">
+          <span aria-hidden="true">&#9998;</span>
+          <span>${t("edit")}</span>
+        </button>
       </div>
     </article>
   `;
@@ -804,6 +825,14 @@ function formatTime(totalSeconds) {
   const minutes = Math.floor(seconds / 60);
   const rest = seconds % 60;
   return `${minutes}:${String(rest).padStart(2, "0")}`;
+}
+
+function formatDurationBadge(totalSeconds) {
+  const seconds = Math.max(0, Math.round(totalSeconds || 0));
+  if (seconds >= 60 && seconds % 60 === 0) {
+    return `${seconds / 60} min`;
+  }
+  return formatTime(seconds);
 }
 
 async function hashPin(pin) {
