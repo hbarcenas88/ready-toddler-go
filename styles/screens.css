@@ -250,12 +250,78 @@
 
 .settings-list {
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-3);
 }
 
 .settings-section {
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: var(--shadow-small);
+  overflow: hidden;
+}
+
+.settings-section summary {
+  display: flex;
+  min-height: 76px;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  cursor: pointer;
+  list-style: none;
+}
+
+.settings-section summary::-webkit-details-marker {
+  display: none;
+}
+
+.settings-section summary::after {
+  content: "+";
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-warm);
+  color: var(--color-muted);
+  font-weight: 900;
+}
+
+.settings-section[open] summary::after {
+  content: "-";
+}
+
+.settings-section summary span {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.settings-section summary strong {
+  color: var(--color-ink);
+  font-size: var(--font-size-lg);
+  line-height: 1.15;
+}
+
+.settings-section summary small {
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+  line-height: 1.25;
+}
+
+.settings-section-body {
   display: grid;
   gap: var(--space-3);
+  padding: 0 var(--space-4) var(--space-4);
+}
+
+.settings-section-body .soft-card {
+  box-shadow: none;
+}
+
+.settings-section-body .action-row {
+  gap: var(--space-2);
 }
 
 .history-item {

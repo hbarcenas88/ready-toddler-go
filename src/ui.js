@@ -324,37 +324,72 @@ function renderSettingsScreen(state) {
   const data = state.data;
   return `
     <section class="settings-list">
-      <article class="card settings-section">
-        <h2 class="section-title">${t("adultSettings")}</h2>
-        <label class="field"><span>${t("language")}</span><select data-change="language"><option value="es" ${data.settings.language === "es" ? "selected" : ""}>${t("spanish")}</option><option value="en" ${data.settings.language === "en" ? "selected" : ""}>${t("english")}</option></select></label>
-        <label class="field"><span>${t("usageMode")}</span><select data-change="use-mode"><option value="${USE_MODES.adultControls}" ${data.settings.useMode === USE_MODES.adultControls ? "selected" : ""}>${t("adultControls")}</option><option value="${USE_MODES.childCanTouch}" ${data.settings.useMode === USE_MODES.childCanTouch ? "selected" : ""}>${t("childCanTouch")}</option></select></label>
-        <p class="eyebrow">${t("childModeNote")}</p>
-        <button class="secondary-button" type="button" data-action="open-pin-setup">${data.settings.pinHash ? t("changePin") : t("setupPin")}</button>
-      </article>
-      <article class="card settings-section">
-        <h2 class="section-title">${t("soundAndVibration")}</h2>
-        ${renderToggle("soundEnabled", t("soundEnabled"), data.settings.soundEnabled)}
-        <label class="field"><span>${t("soundIntensity")}</span><select data-change="setting" data-key="soundIntensity"><option value="${SOUND.intensity.soft}" ${data.settings.soundIntensity === SOUND.intensity.soft ? "selected" : ""}>${t("soft")}</option><option value="${SOUND.intensity.noticeable}" ${data.settings.soundIntensity === SOUND.intensity.noticeable ? "selected" : ""}>${t("noticeable")}</option></select></label>
-        ${renderToggle("intermediateSoundsEnabled", t("intermediateSounds"), data.settings.intermediateSoundsEnabled)}
-        ${renderToggle("vibrationEnabled", t("vibration"), data.settings.vibrationEnabled)}
-        ${renderToggle("keepScreenAwake", t("keepAwake"), data.settings.keepScreenAwake)}
-      </article>
-      <article class="card settings-section">
-        <h2 class="section-title">${t("activities")}</h2>
-        ${renderProtectedGate("activities")}
-        ${canUseSection("activities") ? `<div class="action-row"><button class="secondary-button" type="button" data-action="open-activity-form">${t("createActivity")}</button><button class="secondary-button" type="button" data-action="restore-activities">${t("restoreAllDefaults")}</button></div>` : ""}
-      </article>
-      <article class="card settings-section">
-        <h2 class="section-title">${t("dataManagement")}</h2>
-        ${renderProtectedGate("data")}
-        ${canUseSection("data") ? renderDataManagement(state) : ""}
-      </article>
-      <article class="card settings-section">
-        <h2 class="section-title">${t("aboutTitle")}</h2>
-        <p>${t("aboutBody")}</p>
-        <p><strong>${t("familyNote")}</strong></p>
-        <p class="eyebrow">${t("noMedicalAdvice")}</p>
-      </article>
+      <details class="settings-section" open>
+        <summary>
+          <span>
+            <strong>${t("adultSettings")}</strong>
+            <small>${t("adultSettingsDescription")}</small>
+          </span>
+        </summary>
+        <div class="settings-section-body">
+          <label class="field"><span>${t("language")}</span><select data-change="language"><option value="es" ${data.settings.language === "es" ? "selected" : ""}>${t("spanish")}</option><option value="en" ${data.settings.language === "en" ? "selected" : ""}>${t("english")}</option></select></label>
+          <label class="field"><span>${t("usageMode")}</span><select data-change="use-mode"><option value="${USE_MODES.adultControls}" ${data.settings.useMode === USE_MODES.adultControls ? "selected" : ""}>${t("adultControls")}</option><option value="${USE_MODES.childCanTouch}" ${data.settings.useMode === USE_MODES.childCanTouch ? "selected" : ""}>${t("childCanTouch")}</option></select></label>
+          <p class="eyebrow">${t("childModeNote")}</p>
+          <button class="secondary-button" type="button" data-action="open-pin-setup">${data.settings.pinHash ? t("changePin") : t("setupPin")}</button>
+        </div>
+      </details>
+      <details class="settings-section">
+        <summary>
+          <span>
+            <strong>${t("soundAndVibration")}</strong>
+            <small>${t("soundSettingsDescription")}</small>
+          </span>
+        </summary>
+        <div class="settings-section-body">
+          ${renderToggle("soundEnabled", t("soundEnabled"), data.settings.soundEnabled)}
+          <label class="field"><span>${t("soundIntensity")}</span><select data-change="setting" data-key="soundIntensity"><option value="${SOUND.intensity.soft}" ${data.settings.soundIntensity === SOUND.intensity.soft ? "selected" : ""}>${t("soft")}</option><option value="${SOUND.intensity.noticeable}" ${data.settings.soundIntensity === SOUND.intensity.noticeable ? "selected" : ""}>${t("noticeable")}</option></select></label>
+          ${renderToggle("intermediateSoundsEnabled", t("intermediateSounds"), data.settings.intermediateSoundsEnabled)}
+          ${renderToggle("vibrationEnabled", t("vibration"), data.settings.vibrationEnabled)}
+          ${renderToggle("keepScreenAwake", t("keepAwake"), data.settings.keepScreenAwake)}
+        </div>
+      </details>
+      <details class="settings-section">
+        <summary>
+          <span>
+            <strong>${t("activities")}</strong>
+            <small>${t("activitySettingsDescription")}</small>
+          </span>
+        </summary>
+        <div class="settings-section-body">
+          ${renderProtectedGate("activities")}
+          ${canUseSection("activities") ? `<div class="action-row"><button class="secondary-button" type="button" data-action="open-activity-form">${t("createActivity")}</button><button class="secondary-button" type="button" data-action="restore-activities">${t("restoreAllDefaults")}</button></div>` : ""}
+        </div>
+      </details>
+      <details class="settings-section">
+        <summary>
+          <span>
+            <strong>${t("dataMaintenance")}</strong>
+            <small>${t("dataMaintenanceDescription")}</small>
+          </span>
+        </summary>
+        <div class="settings-section-body">
+          ${renderProtectedGate("data")}
+          ${canUseSection("data") ? renderDataManagement(state) : ""}
+        </div>
+      </details>
+      <details class="settings-section">
+        <summary>
+          <span>
+            <strong>${t("aboutTitle")}</strong>
+            <small>${t("aboutSettingsDescription")}</small>
+          </span>
+        </summary>
+        <div class="settings-section-body">
+          <p>${t("aboutBody")}</p>
+          <p><strong>${t("familyNote")}</strong></p>
+          <p class="eyebrow">${t("noMedicalAdvice")}</p>
+        </div>
+      </details>
     </section>
   `;
 }
