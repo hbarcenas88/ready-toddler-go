@@ -482,11 +482,10 @@ function bindEvents(root) {
   root.addEventListener("click", handleClick);
   root.addEventListener("change", handleChange);
   root.addEventListener("submit", handleSubmit);
-  root.addEventListener("mousedown", handlePressStart);
-  root.addEventListener("mouseup", handlePressEnd);
-  root.addEventListener("mouseleave", handlePressEnd);
-  root.addEventListener("touchstart", handlePressStart, { passive: true });
-  root.addEventListener("touchend", handlePressEnd);
+  root.addEventListener("pointerdown", handlePressStart);
+  root.addEventListener("pointerup", handlePressEnd);
+  root.addEventListener("pointercancel", handlePressEnd);
+  root.addEventListener("pointerleave", handlePressEnd);
 }
 
 function handleClick(event) {
@@ -602,6 +601,7 @@ function handleSubmit(event) {
 
 function handlePressStart(event) {
   if (!event.target.closest("[data-action='hold-unlock']")) return;
+  handlePressEnd();
   unlockTimer = window.setTimeout(() => {
     setScreenLocked(false);
     unlockTimer = null;

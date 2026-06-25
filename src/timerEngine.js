@@ -6,8 +6,14 @@ import { SOUND, APP_SCREENS } from "./config.js";
 import { releaseWakeLock, requestWakeLock } from "./pwa.js";
 
 let intervalId;
+let startInProgress = false;
 
 export function startTimer(timerInput) {
+  const state = getState();
+  const existingTimer = state.data?.activeTimer;
+  if (startInProgress || (existingTimer && existingTimer.status !== TIMER_STATUS.completed)) return;
+  startInProgress = true;
+
   const now = Date.now();
   const durationSeconds = clampDuration(timerInput.durationSeconds);
   const activeTimer = {
@@ -28,7 +34,6 @@ export function startTimer(timerInput) {
     screenLocked: false
   };
 
-  const state = getState();
   state.data.activeTimer = activeTimer;
   saveData(state.data);
   setData(state.data);
@@ -36,12 +41,16 @@ export function startTimer(timerInput) {
   playAppSound(SOUND.ids.start);
   requestWakeLock(state.data.settings.keepScreenAwake);
   startTicker();
+  startInProgress = false;
 }
 
 export function startTicker() {
   stopTicker();
   recalculateTimer();
-  intervalId = window.setInterval(recalculateTimer, TIMER_LIMITS.tickMs);
+  const timer = getState().data?.activeTimer;
+  if (timer && timer.status === TIMER_STATUS.running) {
+    intervalId = window.setInterval(recalculateTimer, TIMER_LIMITS.tickMs);
+  }
 }
 
 export function stopTicker() {
@@ -53,6 +62,7 @@ export function recalculateTimer() {
   const state = getState();
   const timer = state.data?.activeTimer;
   if (!timer) {
+    stopTicker();
     setTimerRuntime({ remainingSeconds: 0, progress: 0, status: TIMER_STATUS.idle });
     return;
   }
@@ -83,6 +93,7 @@ export function pauseTimer() {
   timer.pausedAt = Date.now();
   timer.status = TIMER_STATUS.paused;
   saveAndRefresh();
+  stopTicker();
 }
 
 export function resumeTimer() {
@@ -96,6 +107,7 @@ export function resumeTimer() {
   timer.pausedAt = null;
   timer.status = TIMER_STATUS.running;
   saveAndRefresh();
+  startTicker();
 }
 
 export function restartTimer() {
@@ -112,6 +124,7 @@ export function restartTimer() {
   timer.screenLocked = false;
   saveAndRefresh();
   requestWakeLock(state.data.settings.keepScreenAwake);
+  startTicker();
 }
 
 export function addOneMinute() {
@@ -121,6 +134,7 @@ export function addOneMinute() {
   timer.durationSeconds += TIMER_LIMITS.addMinuteSeconds;
   timer.endsAt += TIMER_LIMITS.addMinuteSeconds * 1000;
   saveAndRefresh();
+  if (timer.status === TIMER_STATUS.running) startTicker();
 }
 
 export function completeTimer(reason = HISTORY_REASONS.early) {
@@ -142,11 +156,21 @@ export function completeTimer(reason = HISTORY_REASONS.early) {
 
 export function finishAndGoHome() {
   const state = getState();
+  stopTicker();
   state.data.activeTimer = null;
   saveData(state.data);
   setData(state.data);
   releaseWakeLock();
   setScreen(APP_SCREENS.home);
+}
+
+export function initializeTimerRuntime() {
+  const timer = getState().data?.activeTimer;
+  if (timer && timer.status === TIMER_STATUS.running) {
+    startTicker();
+    return;
+  }
+  recalculateTimer();
 }
 
 export function setScreenLocked(locked) {

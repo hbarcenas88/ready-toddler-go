@@ -4,7 +4,7 @@ import { setData, setScreen, subscribe } from "./state.js";
 import { loadData, saveData } from "./storage.js";
 import { renderApp } from "./ui.js";
 import { registerServiceWorker } from "./pwa.js";
-import { startTicker } from "./timerEngine.js";
+import { initializeTimerRuntime } from "./timerEngine.js";
 
 const data = loadData();
 setActiveLanguage(data.settings.language);
@@ -14,4 +14,4 @@ subscribe(renderApp);
 renderApp();
 saveData(data);
 registerServiceWorker();
-startTicker();
+initializeTimerRuntime();

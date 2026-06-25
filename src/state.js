@@ -69,7 +69,15 @@ export function setToast(message) {
 }
 
 export function setTimerRuntime(runtime) {
-  state.timerRuntime = { ...state.timerRuntime, ...runtime };
+  const nextRuntime = { ...state.timerRuntime, ...runtime };
+  if (
+    nextRuntime.remainingSeconds === state.timerRuntime.remainingSeconds &&
+    nextRuntime.progress === state.timerRuntime.progress &&
+    nextRuntime.status === state.timerRuntime.status
+  ) {
+    return;
+  }
+  state.timerRuntime = nextRuntime;
   notify();
 }
 

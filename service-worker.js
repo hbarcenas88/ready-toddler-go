@@ -1,6 +1,6 @@
 const PWA_CACHE = {
-  appVersion: "1.0.1",
-  cacheName: "ready-toddler-go-v1.0.1",
+  appVersion: "1.0.2",
+  cacheName: "ready-toddler-go-v1.0.2",
   assets: [
     "./",
     "./index.html",
