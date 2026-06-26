@@ -7,6 +7,11 @@ import { releaseWakeLock, requestWakeLock } from "./pwa.js";
 
 let intervalId;
 let startInProgress = false;
+const timerAudioFlags = {
+  timerId: null,
+  almostDonePlayed: false,
+  finishPlayed: false
+};
 
 export function startTimer(timerInput) {
   const state = getState();
@@ -35,6 +40,7 @@ export function startTimer(timerInput) {
   };
 
   state.data.activeTimer = activeTimer;
+  resetTimerAudioFlags(activeTimer.id);
   saveData(state.data);
   setData(state.data);
   setScreen(APP_SCREENS.timer);
@@ -83,6 +89,7 @@ export function recalculateTimer() {
     completeTimer(HISTORY_REASONS.time);
     return;
   }
+  playCountdownCues(timer, remainingSeconds);
   setTimerRuntime(runtimeFrom(timer, remainingSeconds));
 }
 
@@ -122,6 +129,7 @@ export function restartTimer() {
   timer.status = TIMER_STATUS.running;
   timer.completedReason = null;
   timer.screenLocked = false;
+  resetTimerAudioFlags(timer.id);
   saveAndRefresh();
   requestWakeLock(state.data.settings.keepScreenAwake);
   startTicker();
@@ -131,8 +139,11 @@ export function addOneMinute() {
   const state = getState();
   const timer = state.data.activeTimer;
   if (!timer || timer.status === TIMER_STATUS.completed) return;
+  ensureTimerAudioFlags(timer);
   timer.durationSeconds += TIMER_LIMITS.addMinuteSeconds;
   timer.endsAt += TIMER_LIMITS.addMinuteSeconds * 1000;
+  const remainingSeconds = Math.max(0, Math.ceil((timer.endsAt - Date.now()) / 1000));
+  if (remainingSeconds > 10) timerAudioFlags.almostDonePlayed = false;
   saveAndRefresh();
   if (timer.status === TIMER_STATUS.running) startTicker();
 }
@@ -141,6 +152,7 @@ export function completeTimer(reason = HISTORY_REASONS.early) {
   const state = getState();
   const timer = state.data.activeTimer;
   if (!timer || timer.status === TIMER_STATUS.completed) return;
+  ensureTimerAudioFlags(timer);
   timer.status = TIMER_STATUS.completed;
   timer.completedReason = reason;
   timer.screenLocked = false;
@@ -150,7 +162,10 @@ export function completeTimer(reason = HISTORY_REASONS.early) {
   setTimerRuntime(runtimeFrom(timer, 0));
   stopTicker();
   releaseWakeLock();
-  playAppSound(state.data.settings.soundIntensity === SOUND.intensity.noticeable ? SOUND.ids.completeNoticeable : SOUND.ids.completeSoft);
+  if (!timerAudioFlags.finishPlayed) {
+    timerAudioFlags.finishPlayed = true;
+    playAppSound(SOUND.ids.finish);
+  }
   vibrateCompletion();
 }
 
@@ -158,6 +173,7 @@ export function finishAndGoHome() {
   const state = getState();
   stopTicker();
   state.data.activeTimer = null;
+  resetTimerAudioFlags();
   saveData(state.data);
   setData(state.data);
   releaseWakeLock();
@@ -185,6 +201,29 @@ function saveAndRefresh() {
   saveData(state.data);
   setData(state.data);
   recalculateTimer();
+}
+
+function resetTimerAudioFlags(timerId = null) {
+  timerAudioFlags.timerId = timerId;
+  timerAudioFlags.almostDonePlayed = false;
+  timerAudioFlags.finishPlayed = false;
+}
+
+function ensureTimerAudioFlags(timer) {
+  if (timerAudioFlags.timerId === timer?.id) return;
+  resetTimerAudioFlags(timer?.id || null);
+}
+
+function playCountdownCues(timer, remainingSeconds) {
+  ensureTimerAudioFlags(timer);
+  const settings = getState().data?.settings;
+  if (timer.type !== TIMER_TYPES.countdown) return;
+  if (!settings?.intermediateSoundsEnabled) return;
+  if (timerAudioFlags.almostDonePlayed) return;
+  if (remainingSeconds <= 10) {
+    timerAudioFlags.almostDonePlayed = true;
+    playAppSound(SOUND.ids.almostDone);
+  }
 }
 
 function runtimeFrom(timer, remainingSeconds) {

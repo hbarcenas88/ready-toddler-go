@@ -5,6 +5,7 @@ import { loadData, saveData } from "./storage.js";
 import { renderApp } from "./ui.js";
 import { registerServiceWorker } from "./pwa.js";
 import { initializeTimerRuntime } from "./timerEngine.js";
+import { preloadSounds, unlockAudioOnFirstUserGesture } from "./sounds.js";
 
 const data = loadData();
 setActiveLanguage(data.settings.language);
@@ -14,4 +15,6 @@ subscribe(renderApp);
 renderApp();
 saveData(data);
 registerServiceWorker();
+preloadSounds();
+unlockAudioOnFirstUserGesture();
 initializeTimerRuntime();

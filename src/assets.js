@@ -80,10 +80,13 @@ export const ASSETS = {
     "activity-placeholder": "assets/illustrations/activities/activity-placeholder.svg"
   },
   sounds: {
-    start: null,
-    completeSoft: null,
-    completeNoticeable: null,
-    tap: null
+    start: "assets/sounds/timers/start.wav",
+    almostDone: "assets/sounds/timers/almost-done.wav",
+    finish: "assets/sounds/timers/finish.wav",
+    progressSoft: "assets/sounds/timers/progress-soft.wav",
+    completeSoft: "assets/sounds/timers/finish.wav",
+    completeNoticeable: "assets/sounds/timers/finish.wav",
+    tap: "assets/sounds/ui/tap.wav"
   }
 };
 
@@ -116,4 +119,8 @@ export function getActivityAsset(activityId) {
 
 export function getSoundAsset(soundId) {
   return ASSETS.sounds[soundId] || null;
+}
+
+export function getSoundAssetList() {
+  return Array.from(new Set(Object.values(ASSETS.sounds).filter(Boolean)));
 }

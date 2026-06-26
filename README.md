@@ -180,7 +180,46 @@ If old assets keep appearing after a replacement, open Settings > Data & mainten
 
 ## Adding future sounds
 
-Place local files under `assets/sounds`, add them to the sound registry in `src/assets.js`, and update `src/sounds.js` if the playback behavior needs to change. Keep Web Audio fallback available.
+Timer sounds are centralized in `src/assets.js` under `ASSETS.sounds`. The app uses local files first and keeps a small Web Audio fallback if a file cannot play.
+
+Current V1 structure:
+
+```text
+assets/sounds/
+  timers/
+    start.wav
+    almost-done.wav
+    finish.wav
+    progress-soft.wav
+  ui/
+    tap.wav
+```
+
+Active countdown sounds:
+
+```text
+start.wav        plays when a timer starts
+almost-done.wav  plays once at 10 seconds remaining when Intermediate sounds is enabled
+finish.wav       plays once when the timer completes or Finish now is used
+```
+
+Reserved sounds:
+
+```text
+progress-soft.wav
+tap.wav
+```
+
+Recommended replacements:
+
+```text
+Format: wav, mp3, or another browser-supported local audio format
+Duration: under 1 second for cues
+Volume: soft/mastered conservatively
+Size: ideally under 100 KB each
+```
+
+To replace a sound, place the file under `assets/sounds/...`, update the matching path in `src/assets.js`, add it to `service-worker.js`, and bump `APP_INFO.version` plus `PWA_CACHE.appVersion/cacheName`. If an installed PWA keeps playing an old sound, use Settings > Data & maintenance > Repair app, then close and reopen the app. For a stronger reset, clear the service worker and Cache Storage for this site in DevTools > Application.
 
 ## Testing checklist
 
@@ -208,7 +247,7 @@ Place local files under `assets/sounds`, add them to the sound registry in `src/
 ## Known limitations
 
 - Illustrations and icons are placeholder local SVGs.
-- Sounds are generated with the Web Audio API until real local sound files are added.
+- Sounds use local files with Web Audio fallback.
 - Wake Lock depends on browser support.
 - PIN hashing is practical for a local-only app, not a server-grade authentication system.
 - Export/import covers app data only.

@@ -1,6 +1,6 @@
 const PWA_CACHE = {
-  appVersion: "1.0.6",
-  cacheName: "ready-toddler-go-v1.0.6",
+  appVersion: "1.0.7",
+  cacheName: "ready-toddler-go-v1.0.7",
   assets: [
     "./",
     "./index.html",
@@ -31,7 +31,12 @@ const PWA_CACHE = {
     "./assets/illustrations/journeys/dinosaur-cave/background.webp",
     "./assets/illustrations/journeys/dinosaur-cave/character.webp",
     "./assets/illustrations/journeys/dinosaur-cave/goal.webp",
-    "./assets/illustrations/activities/activity-placeholder.svg"
+    "./assets/illustrations/activities/activity-placeholder.svg",
+    "./assets/sounds/timers/start.wav",
+    "./assets/sounds/timers/almost-done.wav",
+    "./assets/sounds/timers/finish.wav",
+    "./assets/sounds/timers/progress-soft.wav",
+    "./assets/sounds/ui/tap.wav"
   ]
 };
 

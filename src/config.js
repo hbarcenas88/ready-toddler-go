@@ -1,7 +1,7 @@
 export const APP_INFO = {
   fullName: "Ready, Toddler, Go!",
   shortName: "Toddler Go!",
-  version: "1.0.6",
+  version: "1.0.7",
   themeName: "pastelAdventure"
 };
 
@@ -79,6 +79,9 @@ export const COUNTDOWN_VISUALS = {
 export const SOUND = {
   ids: {
     start: "start",
+    almostDone: "almostDone",
+    finish: "finish",
+    progressSoft: "progressSoft",
     completeSoft: "completeSoft",
     completeNoticeable: "completeNoticeable",
     tap: "tap"
