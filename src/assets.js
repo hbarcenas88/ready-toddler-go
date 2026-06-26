@@ -63,9 +63,9 @@ export const ASSETS = {
       celebrationEmoji: "✨"
     },
     "dinosaur-cave": {
-      background: "assets/illustrations/journeys/dinosaur-cave/background.svg",
-      character: "assets/illustrations/journeys/dinosaur-cave/character.svg",
-      goal: "assets/illustrations/journeys/dinosaur-cave/goal.svg",
+      background: "assets/illustrations/journeys/dinosaur-cave/background.webp",
+      character: "assets/illustrations/journeys/dinosaur-cave/character.webp",
+      goal: "assets/illustrations/journeys/dinosaur-cave/goal.webp",
       fallback: "assets/illustrations/journeys/dinosaur-cave.svg",
       characterSize: "34%",
       startX: "4%",

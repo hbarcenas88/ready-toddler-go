@@ -124,17 +124,17 @@ Use this exact folder shape for a layered countdown journey:
 ```text
 assets/illustrations/journeys/
   dinosaur-cave/
-    background.svg
-    character.svg
-    goal.svg
+    background.webp
+    character.webp
+    goal.webp
 ```
 
 Expected file names:
 
 ```text
-background.svg
-character.svg
-goal.svg
+background.svg, background.png, or background.webp
+character.svg, character.png, or character.webp
+goal.svg, goal.png, or goal.webp
 ```
 
 Allowed formats for V1 are `.svg`, `.png`, and `.webp`. SVG is recommended for simple vector/storybook art. PNG or WebP is better for painted premium artwork with transparent characters.
@@ -160,9 +160,9 @@ Example registry entry:
 
 ```js
 "dinosaur-cave": {
-  background: "assets/illustrations/journeys/dinosaur-cave/background.svg",
-  character: "assets/illustrations/journeys/dinosaur-cave/character.svg",
-  goal: "assets/illustrations/journeys/dinosaur-cave/goal.svg",
+  background: "assets/illustrations/journeys/dinosaur-cave/background.webp",
+  character: "assets/illustrations/journeys/dinosaur-cave/character.webp",
+  goal: "assets/illustrations/journeys/dinosaur-cave/goal.webp",
   fallback: "assets/illustrations/journeys/dinosaur-cave.svg",
   characterSize: "34%",
   startX: "4%",
